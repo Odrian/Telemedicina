@@ -1,4 +1,4 @@
-public class ChatVidio {
+public class VracPoisk {
     public static void empty1(){ // пустышка
 
     }

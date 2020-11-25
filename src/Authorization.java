@@ -1,5 +1,5 @@
-public class Authorization {
-    public static void author(){ // главный, проверка наличия сеанса
+public class Authorization { // Авторизация
+    public static void author(){ // запускается первым, проверка наличия сеанса
 
     }
 
