@@ -1,4 +1,6 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+# Not Default
 libraries/
+misc.xml
