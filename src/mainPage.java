@@ -1,5 +1,5 @@
 public class mainPage {
-    public static void starting(){ // Запуск
+    public static void start(){ // Запуск
 
     }
 }

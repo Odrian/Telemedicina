@@ -1,5 +1,5 @@
 public class ChatAudio {
-    public static void empty1(){ // пустышка
+    public static void activity_call(){ // экран звонка
 
     }
 }
