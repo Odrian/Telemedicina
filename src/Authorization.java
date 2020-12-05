@@ -27,7 +27,7 @@ public class Authorization { // Авторизация
     }
 
     public static void page() { // окно выбора типа входа
-        login();//для удобства
+        regist();//для удобства
     }
 
     public static void login(){ // Окно входа
@@ -91,6 +91,79 @@ public class Authorization { // Авторизация
     }
 
     public static void regist(){ // Окно регестрации
+        Text T_Phone = new Text("Номер телефона");
+        TextField TF_Phone = new TextField();
+        Text errPhone = new Text("Неверный номер телефона"); errPhone.setVisible(false);
 
+        Text T_psw = new Text("Пароль");
+        PasswordField PF_psw = new PasswordField();
+        Text errPsw1 = new Text("");
+
+        Text T_psw2 = new Text("Подтвердите пароль");
+        PasswordField PF_psw2 = new PasswordField();
+        Text errPsw2 = new Text("Пароли не совподают"); errPsw2.setVisible(false);
+
+        Button B_submit = new Button("Зарегествироваться");
+
+        B_submit.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                errPhone.setVisible(false);
+                errPsw1.setText("");
+                errPsw2.setVisible(false);
+
+                String phone = TF_Phone.getText();
+                String psw1 = PF_psw.getText();
+                String psw2 = PF_psw2.getText();
+                boolean flag = true;
+                if (phone.matches("7\\d{10}")){
+                    if (psw1.length() >= 6){
+                        if (psw1.matches("\\w*")){
+                            if (psw1.equals(psw2)){
+                                // запрос к серверу на регестрацию
+                            } else{
+                                errPsw2.setVisible(true);
+                            }
+                        } else{
+                            errPsw1.setText("Можно использовать толь англиский алфовит и цифры");
+                        }
+                    } else{
+                        errPsw1.setText("Минимильная длина пароля - 6");
+                    }
+                } else{
+                    errPhone.setVisible(true);
+                }
+            }
+        });
+
+        Font F_a20 = new Font(20);
+        T_Phone.setFont(F_a20); TF_Phone.setFont(F_a20); T_psw.setFont(F_a20); PF_psw.setFont(F_a20); T_psw2.setFont(F_a20); PF_psw2.setFont(F_a20); B_submit.setFont(F_a20);
+        TF_Phone.setPrefHeight(50); PF_psw.setPrefHeight(50); PF_psw2.setPrefHeight(50);
+
+        VBox L_up = new VBox(T_Phone, TF_Phone, errPhone);
+        L_up.setSpacing(8);
+
+        VBox L_psw1 = new VBox(T_psw, PF_psw, errPsw1);
+        L_psw1.setSpacing(8);
+
+        VBox L_psw2 = new VBox(T_psw2, PF_psw2, errPsw2);
+        L_psw2.setSpacing(8);
+
+        StackPane L_submit = new StackPane(B_submit);
+        L_submit.setAlignment(Pos.CENTER);
+
+        VBox L_mainBox = new VBox(L_up, L_psw1, L_psw2, L_submit);
+        L_mainBox.setAlignment(Pos.CENTER);
+        L_mainBox.setSpacing(20);
+        L_mainBox.setPadding(new Insets(20));
+        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+
+        Scene scene = new Scene(L_mainBox);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setHeight(600);
+        stage.setWidth(400);
+        stage.setTitle("Регестрация");
+        stage.setResizable(false);
+        stage.show();
     }
 }
