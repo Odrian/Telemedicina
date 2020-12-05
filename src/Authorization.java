@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -27,10 +28,69 @@ public class Authorization { // Авторизация
     }
 
     public static void page() { // окно выбора типа входа
-        regist();//для удобства
+        Stage stageMain = new Stage();
+
+        Image I_logo = new Image("file:pic/logo.png");
+        ImageView IV_logo = new ImageView(I_logo);
+        IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
+
+        Button B_login = new Button("Вход");
+        Button B_regist = new Button("Регистрация");
+        Button B_gos = new Button("Гос-Услуги");
+
+        B_login.setPrefSize(200, 70);
+        B_regist.setPrefSize(200, 70);
+        B_gos.setPrefSize(200, 70);
+
+        VBox L_mainBox = new VBox(IV_logo, B_login, B_regist, B_gos);
+        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+        L_mainBox.setAlignment(Pos.CENTER);
+        L_mainBox.setSpacing(30);
+
+        B_login.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                stageMain.close();
+                login();
+            }
+        });
+
+        B_regist.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                stageMain.close();
+                regist();
+            }
+        });
+
+        B_gos.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                stageMain.close();
+                // вход через гос-услуги
+            }
+        });
+
+        Scene scene = new Scene(L_mainBox);
+        stageMain.setScene(scene);
+        stageMain.setHeight(600);
+        stageMain.setWidth(400);
+        stageMain.setTitle("Telemedecina");
+        stageMain.setResizable(false);
+        stageMain.show();
     }
 
     public static void login(){ // Окно входа
+        Stage stageLogin = new Stage();
+
+        Button B_back = new Button("Назад");
+        B_back.setPrefSize(70, 50);
+        B_back.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                stageLogin.close();
+                page();
+            }
+        });
+        VBox L_back = new VBox(B_back);
+        L_back.setAlignment(Pos.TOP_LEFT);;
+
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -46,6 +106,7 @@ public class Authorization { // Авторизация
 
         T_ucp.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
+                stageLogin.close();
                 // если забыл пароль
             }
         });
@@ -80,17 +141,30 @@ public class Authorization { // Авторизация
         VBox L_mainBox = new VBox(L_image, L_VBox);
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        Scene scene = new Scene(L_mainBox);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setHeight(600);
-        stage.setWidth(400);
-        stage.setTitle("Вход");
-        stage.setResizable(false);
-        stage.show();
+        StackPane L_AP = new StackPane(L_mainBox, L_back);
+
+        Scene scene = new Scene(L_AP);
+        stageLogin.setScene(scene);
+        stageLogin.setHeight(600);
+        stageLogin.setWidth(400);
+        stageLogin.setTitle("Вход");
+        stageLogin.setResizable(false);
+        stageLogin.show();
     }
 
     public static void regist(){ // Окно регестрации
+        Stage stageRegist = new Stage();
+        Button B_back = new Button("Назад");
+        B_back.setPrefSize(70, 50);
+        B_back.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                stageRegist.close();
+                page();
+            }
+        });
+        VBox L_back = new VBox(B_back);
+        L_back.setAlignment(Pos.TOP_LEFT);;
+
         Text T_Phone = new Text("Номер телефона");
         TextField TF_Phone = new TextField();
         Text errPhone = new Text("Неверный номер телефона"); errPhone.setVisible(false);
@@ -111,6 +185,15 @@ public class Authorization { // Авторизация
                 errPsw1.setText("");
                 errPsw2.setVisible(false);
 
+                Button B_back = new Button("Назад");
+                B_back.setPrefSize(70, 50);
+                B_back.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e) {
+                        stageRegist.close();
+                        page();
+                    }
+                });B_back.setAlignment(Pos.TOP_LEFT);
+
                 String phone = TF_Phone.getText();
                 String psw1 = PF_psw.getText();
                 String psw2 = PF_psw2.getText();
@@ -120,6 +203,7 @@ public class Authorization { // Авторизация
                         if (psw1.matches("\\w*")){
                             if (psw1.equals(psw2)){
                                 // запрос к серверу на регестрацию
+                                stageRegist.close();
                             } else{
                                 errPsw2.setVisible(true);
                             }
@@ -157,13 +241,14 @@ public class Authorization { // Авторизация
         L_mainBox.setPadding(new Insets(20));
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        Scene scene = new Scene(L_mainBox);
-        Stage stage = new Stage();
-        stage.setScene(scene);
-        stage.setHeight(600);
-        stage.setWidth(400);
-        stage.setTitle("Регестрация");
-        stage.setResizable(false);
-        stage.show();
+        StackPane L_AP = new StackPane(L_mainBox, L_back);
+
+        Scene scene = new Scene(L_AP);
+        stageRegist.setScene(scene);
+        stageRegist.setHeight(600);
+        stageRegist.setWidth(400);
+        stageRegist.setTitle("Регестрация");
+        stageRegist.setResizable(false);
+        stageRegist.show();
     }
 }
