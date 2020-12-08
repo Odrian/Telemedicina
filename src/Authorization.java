@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 
@@ -80,17 +81,6 @@ public class Authorization { // Авторизация
     public static void login(){ // Окно входа
         Stage stageLogin = new Stage();
 
-        Button B_back = new Button("Назад");
-        B_back.setPrefSize(70, 50);
-        B_back.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                stageLogin.close();
-                page();
-            }
-        });
-        VBox L_back = new VBox(B_back);
-        L_back.setAlignment(Pos.TOP_LEFT);;
-
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -99,17 +89,14 @@ public class Authorization { // Авторизация
         TextField TF_login = new TextField();
         Text T_psw = new Text("Пароль");
         PasswordField PF_psw = new PasswordField();
-        Hyperlink T_ucp = new Hyperlink("Неверный логин или пароль");
-        T_ucp.setVisited(true);
-        T_ucp.setVisible(true);
-        Button B_submit = new Button("Войти");
 
-        T_ucp.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                stageLogin.close();
-                // если забыл пароль
-            }
+        Text T_ucp = new Text("Неверный логин или пароль, ");
+        T_ucp.setOnMouseClicked(e -> {
+            stageLogin.close();
+            restorePassword();
         });
+
+        Button B_submit = new Button("Войти");
         B_submit.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 // проверка правельности логина и пароля
@@ -141,9 +128,7 @@ public class Authorization { // Авторизация
         VBox L_mainBox = new VBox(L_image, L_VBox);
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        StackPane L_AP = new StackPane(L_mainBox, L_back);
-
-        Scene scene = new Scene(L_AP);
+        Scene scene = new Scene(L_mainBox);
         stageLogin.setScene(scene);
         stageLogin.setHeight(600);
         stageLogin.setWidth(400);
@@ -154,16 +139,6 @@ public class Authorization { // Авторизация
 
     public static void regist(){ // Окно регестрации
         Stage stageRegist = new Stage();
-        Button B_back = new Button("Назад");
-        B_back.setPrefSize(70, 50);
-        B_back.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                stageRegist.close();
-                page();
-            }
-        });
-        VBox L_back = new VBox(B_back);
-        L_back.setAlignment(Pos.TOP_LEFT);;
 
         Text T_Phone = new Text("Номер телефона");
         TextField TF_Phone = new TextField();
@@ -241,14 +216,49 @@ public class Authorization { // Авторизация
         L_mainBox.setPadding(new Insets(20));
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        StackPane L_AP = new StackPane(L_mainBox, L_back);
-
-        Scene scene = new Scene(L_AP);
+        Scene scene = new Scene(L_mainBox);
         stageRegist.setScene(scene);
         stageRegist.setHeight(600);
         stageRegist.setWidth(400);
         stageRegist.setTitle("Регестрация");
         stageRegist.setResizable(false);
         stageRegist.show();
+    }
+
+    public static void restorePassword(){
+        Stage stageRestore = new Stage();
+
+        Text T_phone = new Text("Телефон");
+
+        TextField TF_Phone = new TextField();
+        TF_Phone.setPrefHeight(50);
+        Text errPhone = new Text("Неверный телефон");
+        errPhone.setVisible(false);
+
+        Button B_submit = new Button("Востановить");
+        B_submit.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                errPhone.setVisible(false);
+                if (TF_Phone.getText().matches("7\\d{10}")){
+                    // отправляем запрос на сервер
+                } else {
+                    errPhone.setVisible(true);
+                }
+            }
+        });
+
+        VBox L_mainBox = new VBox(T_phone, TF_Phone, B_submit);
+        L_mainBox.setAlignment(Pos.CENTER);
+        L_mainBox.setSpacing(20);
+        L_mainBox.setPadding(new Insets(20));
+        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+
+        Scene scene = new Scene(L_mainBox);
+        stageRestore.setScene(scene);
+        stageRestore.setHeight(200);
+        stageRestore.setWidth(400);
+        stageRestore.setTitle("Востоновление пароля");
+        stageRestore.setResizable(false);
+        stageRestore.show();
     }
 }
