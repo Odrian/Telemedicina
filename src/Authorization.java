@@ -4,33 +4,37 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 
 public class Authorization { // Авторизация
+    private static Stage stage = new Stage();
+    private static Scene scene = new Scene(new VBox());
+
     public static void start(){ // запускается первым, проверка наличия сеанса
+        stage.setScene(scene);
+        stage.setHeight(600);
+        stage.setWidth(400);
+        stage.setTitle("Telemedecina");
+        stage.setResizable(false);
         String session = FileRead.getSession();
         if (session.equals("")){
             page();
+            stage.show();
         }else{
             //проверка сессии
         }
     }
 
     public static void page() { // окно выбора типа входа
-        Stage stageMain = new Stage();
-
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -50,37 +54,26 @@ public class Authorization { // Авторизация
 
         B_login.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                stageMain.close();
                 login();
             }
         });
 
         B_regist.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                stageMain.close();
                 regist();
             }
         });
 
         B_gos.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                stageMain.close();
                 // вход через гос-услуги
             }
         });
+        scene.setRoot(L_mainBox);
 
-        Scene scene = new Scene(L_mainBox);
-        stageMain.setScene(scene);
-        stageMain.setHeight(600);
-        stageMain.setWidth(400);
-        stageMain.setTitle("Telemedecina");
-        stageMain.setResizable(false);
-        stageMain.show();
     }
 
     public static void login(){ // Окно входа
-        Stage stageLogin = new Stage();
-
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -92,7 +85,6 @@ public class Authorization { // Авторизация
 
         Text T_ucp = new Text("Неверный логин или пароль, ");
         T_ucp.setOnMouseClicked(e -> {
-            stageLogin.close();
             restorePassword();
         });
 
@@ -128,18 +120,10 @@ public class Authorization { // Авторизация
         VBox L_mainBox = new VBox(L_image, L_VBox);
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        Scene scene = new Scene(L_mainBox);
-        stageLogin.setScene(scene);
-        stageLogin.setHeight(600);
-        stageLogin.setWidth(400);
-        stageLogin.setTitle("Вход");
-        stageLogin.setResizable(false);
-        stageLogin.show();
+        scene.setRoot(L_mainBox);
     }
 
     public static void regist(){ // Окно регестрации
-        Stage stageRegist = new Stage();
-
         Text T_Phone = new Text("Номер телефона");
         TextField TF_Phone = new TextField();
         Text errPhone = new Text("Неверный номер телефона"); errPhone.setVisible(false);
@@ -164,7 +148,6 @@ public class Authorization { // Авторизация
                 B_back.setPrefSize(70, 50);
                 B_back.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent e) {
-                        stageRegist.close();
                         page();
                     }
                 });B_back.setAlignment(Pos.TOP_LEFT);
@@ -178,7 +161,6 @@ public class Authorization { // Авторизация
                         if (psw1.matches("\\w*")){
                             if (psw1.equals(psw2)){
                                 // запрос к серверу на регестрацию
-                                stageRegist.close();
                             } else{
                                 errPsw2.setVisible(true);
                             }
@@ -216,18 +198,10 @@ public class Authorization { // Авторизация
         L_mainBox.setPadding(new Insets(20));
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        Scene scene = new Scene(L_mainBox);
-        stageRegist.setScene(scene);
-        stageRegist.setHeight(600);
-        stageRegist.setWidth(400);
-        stageRegist.setTitle("Регестрация");
-        stageRegist.setResizable(false);
-        stageRegist.show();
+        scene.setRoot(L_mainBox);
     }
 
     public static void restorePassword(){
-        Stage stageRestore = new Stage();
-
         Text T_phone = new Text("Телефон");
 
         TextField TF_Phone = new TextField();
@@ -253,12 +227,6 @@ public class Authorization { // Авторизация
         L_mainBox.setPadding(new Insets(20));
         L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
 
-        Scene scene = new Scene(L_mainBox);
-        stageRestore.setScene(scene);
-        stageRestore.setHeight(200);
-        stageRestore.setWidth(400);
-        stageRestore.setTitle("Востоновление пароля");
-        stageRestore.setResizable(false);
-        stageRestore.show();
+        scene.setRoot(L_mainBox);
     }
 }
