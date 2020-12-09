@@ -16,6 +16,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/*
+В setup() в приватные переменные задаются панели, кнопками сцене задаются другие панели,
+таким образом каждый переход на другое окно не нужно задаво создавать панели
+ */
 
 public class Authorization { // Авторизация
     private static Stage stage = new Stage();
@@ -24,16 +28,13 @@ public class Authorization { // Авторизация
     private static Pane P_login;
     private static Pane P_regist;
     private static Pane P_restorePsw;
-    public static void start(){ // запускается первым, проверка наличия сеанса
-        String session = FileRead.getSession();
-        if (session.equals("")){
-            setup();
-            stage.show();
-        }else{
-            //проверка сессии
-        }
+
+    // Тут будет проверка был ли вход в аккаунт
+    public static void start(){
+        setup();
     }
 
+    // Запускает окно входа
     public static void setup(){
         stage.setScene(scene);
         stage.setHeight(600);
@@ -45,18 +46,18 @@ public class Authorization { // Авторизация
         P_regist = regist();
         P_restorePsw = restorePassword();
         scene.setRoot(P_page);
+        stage.show();
     }
 
-    public static VBox Pane(Pane pane, Pane backPane, boolean flag){
+    // Добавляет кнопку назад сверху-слева
+    private static Pane upPane(Pane pane, Pane backPane, boolean flag){
         HBox upPane = new HBox();
         if (flag) {
             Button B_back = new Button("", new ImageView(new Image("file:pic/back.png")));
             B_back.setPrefSize(16, 16);
             B_back.setStyle("-fx-background-color: transparent;");
-            B_back.setOnAction(new EventHandler<ActionEvent>() {
-                public void handle(ActionEvent e) {
-                    scene.setRoot(backPane);
-                }
+            B_back.setOnAction(e ->{
+                scene.setRoot(backPane);
             });
             upPane.getChildren().add(B_back);
         } else {
@@ -69,7 +70,10 @@ public class Authorization { // Авторизация
         return new VBox(upPane, pane);
     }
 
-    public static Pane page() { // окно выбора типа входа
+
+
+    // окно выбора типа входа
+    private static Pane page() {
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -90,27 +94,22 @@ public class Authorization { // Авторизация
         L_mainBox.setAlignment(Pos.CENTER);
         L_mainBox.setSpacing(18);
 
-        B_login.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                scene.setRoot(P_login);
-            }
+        B_login.setOnAction(e -> {
+            scene.setRoot(P_login);
         });
 
-        B_regist.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                scene.setRoot(P_regist);
-            }
+        B_regist.setOnAction(e -> {
+            scene.setRoot(P_regist);
         });
 
-        B_gos.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                // вход через гос-услуги
-            }
+        B_gos.setOnAction(e -> {
+            // вход через гос-услуги
         });
-        return Pane(L_mainBox, new VBox(), false);
+        return upPane(L_mainBox, new Pane(), false);
     }
 
-    public static Pane login(){ // Окно входа
+    // Окно входа
+    private static Pane login(){
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -126,10 +125,9 @@ public class Authorization { // Авторизация
         });
 
         Button B_submit = new Button("Войти");
-        B_submit.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                // проверка правельности логина и пароля
-            }
+        B_submit.setOnAction(e -> {
+            System.out.println("Вход");
+            // проверка правельности логина и пароля
         });
 
         Font F_a20 = new Font(20);
@@ -157,10 +155,11 @@ public class Authorization { // Авторизация
         VBox L_mainBox = new VBox(L_image, L_VBox);
         L_mainBox.setStyle("-fx-background-color: silver;");
 
-        return Pane(L_mainBox, P_page, true);
+        return upPane(L_mainBox, P_page, true);
     }
 
-    public static Pane regist(){ // Окно регестрации
+    // Окно регестрации
+    private static Pane regist(){
         Text T_Phone = new Text("Номер телефона");
         TextField TF_Phone = new TextField();
         Text errPhone = new Text("Неверный номер телефона"); errPhone.setVisible(false);
@@ -175,41 +174,31 @@ public class Authorization { // Авторизация
 
         Button B_submit = new Button("Зарегествироваться");
 
-        B_submit.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                errPhone.setVisible(false);
-                errPsw1.setText("");
-                errPsw2.setVisible(false);
+        B_submit.setOnAction(e -> {
+            errPhone.setVisible(false);
+            errPsw1.setText("");
+            errPsw2.setVisible(false);
 
-                Button B_back = new Button("Назад");
-                B_back.setPrefSize(70, 50);
-                B_back.setOnAction(new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e) {
-                        page();
-                    }
-                });B_back.setAlignment(Pos.TOP_LEFT);
-
-                String phone = TF_Phone.getText();
-                String psw1 = PF_psw.getText();
-                String psw2 = PF_psw2.getText();
-                boolean flag = true;
-                if (phone.matches("7\\d{10}")){
-                    if (psw1.length() >= 6){
-                        if (psw1.matches("\\w*")){
-                            if (psw1.equals(psw2)){
-                                // запрос к серверу на регестрацию
-                            } else{
-                                errPsw2.setVisible(true);
-                            }
+            String phone = TF_Phone.getText();
+            String psw1 = PF_psw.getText();
+            String psw2 = PF_psw2.getText();
+            if (phone.matches("7\\d{10}")){
+                if (psw1.length() >= 6){
+                    if (psw1.matches("\\w*")){
+                        if (psw1.equals(psw2)){
+                            System.out.println("Регестрация");
+                            // запрос к серверу на регестрацию
                         } else{
-                            errPsw1.setText("Можно использовать толь англиский алфовит и цифры");
+                            errPsw2.setVisible(true);
                         }
                     } else{
-                        errPsw1.setText("Минимильная длина пароля - 6");
+                        errPsw1.setText("Можно использовать толь англиский алфовит и цифры");
                     }
                 } else{
-                    errPhone.setVisible(true);
+                    errPsw1.setText("Минимильная длина пароля - 6");
                 }
+            } else{
+                errPhone.setVisible(true);
             }
         });
 
@@ -232,10 +221,11 @@ public class Authorization { // Авторизация
         L_mainBox.setPadding(new Insets(20));
         L_mainBox.setStyle("-fx-background-color: silver;");
 
-        return Pane(L_mainBox, P_page, true);
+        return upPane(L_mainBox, P_page, true);
     }
 
-    public static Pane restorePassword(){
+    // Окно востановления пароля
+    private static Pane restorePassword(){
         Text T_phone = new Text("Телефон");
 
         TextField TF_Phone = new TextField();
@@ -244,14 +234,13 @@ public class Authorization { // Авторизация
         errPhone.setVisible(false);
 
         Button B_submit = new Button("Востановить");
-        B_submit.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                errPhone.setVisible(false);
-                if (TF_Phone.getText().matches("7\\d{10}")){
-                    // отправляем запрос на сервер
-                } else {
-                    errPhone.setVisible(true);
-                }
+        B_submit.setOnAction(e -> {
+            errPhone.setVisible(false);
+            if (TF_Phone.getText().matches("7\\d{10}")){
+                System.out.println("Востановление пароля");
+                // отправляем запрос на сервер
+            } else {
+                errPhone.setVisible(true);
             }
         });
 
@@ -261,6 +250,6 @@ public class Authorization { // Авторизация
         L_mainBox.setPadding(new Insets(20));
         L_mainBox.setStyle("-fx-background-color: silver;");
 
-        return Pane(L_mainBox, P_login, true);
+        return upPane(L_mainBox, P_login, true);
     }
 }
