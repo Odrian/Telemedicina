@@ -8,33 +8,68 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
 public class Authorization { // Авторизация
     private static Stage stage = new Stage();
     private static Scene scene = new Scene(new VBox());
-
+    private static Pane P_page;
+    private static Pane P_login;
+    private static Pane P_regist;
+    private static Pane P_restorePsw;
     public static void start(){ // запускается первым, проверка наличия сеанса
-        stage.setScene(scene);
-        stage.setHeight(600);
-        stage.setWidth(400);
-        stage.setTitle("Telemedecina");
-        stage.setResizable(false);
         String session = FileRead.getSession();
         if (session.equals("")){
-            page();
+            setup();
             stage.show();
         }else{
             //проверка сессии
         }
     }
 
-    public static void page() { // окно выбора типа входа
+    public static void setup(){
+        stage.setScene(scene);
+        stage.setHeight(600);
+        stage.setWidth(400);
+        stage.setTitle("Telemedecina");
+        stage.setResizable(false);
+        P_page = page();
+        P_login = login();
+        P_regist = regist();
+        P_restorePsw = restorePassword();
+        scene.setRoot(P_page);
+    }
+
+    public static VBox Pane(Pane pane, Pane backPane, boolean flag){
+        HBox upPane = new HBox();
+        if (flag) {
+            Button B_back = new Button("", new ImageView(new Image("file:pic/back.png")));
+            B_back.setPrefSize(16, 16);
+            B_back.setStyle("-fx-background-color: transparent;");
+            B_back.setOnAction(new EventHandler<ActionEvent>() {
+                public void handle(ActionEvent e) {
+                    scene.setRoot(backPane);
+                }
+            });
+            upPane.getChildren().add(B_back);
+        } else {
+            upPane.setMinHeight(40);
+        }
+        upPane.setAlignment(Pos.CENTER_LEFT);
+        //upPane.setSpacing(10);
+        upPane.setStyle("-fx-background-color: rgb(30,160,230);");
+        pane.setPrefHeight(580);
+        return new VBox(upPane, pane);
+    }
+
+    public static Pane page() { // окно выбора типа входа
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -47,20 +82,23 @@ public class Authorization { // Авторизация
         B_regist.setPrefSize(200, 70);
         B_gos.setPrefSize(200, 70);
 
-        VBox L_mainBox = new VBox(IV_logo, B_login, B_regist, B_gos);
-        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+        StackPane L_logo = new StackPane(IV_logo);
+        L_logo.setPadding(new Insets(3, 0, 0, 0));
+
+        VBox L_mainBox = new VBox(L_logo, B_login, B_regist, B_gos);
+        L_mainBox.setStyle("-fx-background-color: silver;");
         L_mainBox.setAlignment(Pos.CENTER);
-        L_mainBox.setSpacing(30);
+        L_mainBox.setSpacing(18);
 
         B_login.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                login();
+                scene.setRoot(P_login);
             }
         });
 
         B_regist.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                regist();
+                scene.setRoot(P_regist);
             }
         });
 
@@ -69,11 +107,10 @@ public class Authorization { // Авторизация
                 // вход через гос-услуги
             }
         });
-        scene.setRoot(L_mainBox);
-
+        return Pane(L_mainBox, new VBox(), false);
     }
 
-    public static void login(){ // Окно входа
+    public static Pane login(){ // Окно входа
         Image I_logo = new Image("file:pic/logo.png");
         ImageView IV_logo = new ImageView(I_logo);
         IV_logo.setFitHeight(200); IV_logo.setFitWidth(200);
@@ -85,7 +122,7 @@ public class Authorization { // Авторизация
 
         Text T_ucp = new Text("Неверный логин или пароль, ");
         T_ucp.setOnMouseClicked(e -> {
-            restorePassword();
+            scene.setRoot(P_restorePsw);
         });
 
         Button B_submit = new Button("Войти");
@@ -110,7 +147,7 @@ public class Authorization { // Авторизация
 
         VBox L_VBox = new VBox(L_up, L_psw);
         L_VBox.setAlignment(Pos.CENTER);
-        L_VBox.setSpacing(40);
+        L_VBox.setSpacing(10);
         L_VBox.setPadding(new Insets(20));
 
         StackPane L_image = new StackPane(IV_logo);
@@ -118,12 +155,12 @@ public class Authorization { // Авторизация
         L_image.setPadding(new Insets(30, 20, 0, 20));
 
         VBox L_mainBox = new VBox(L_image, L_VBox);
-        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+        L_mainBox.setStyle("-fx-background-color: silver;");
 
-        scene.setRoot(L_mainBox);
+        return Pane(L_mainBox, P_page, true);
     }
 
-    public static void regist(){ // Окно регестрации
+    public static Pane regist(){ // Окно регестрации
         Text T_Phone = new Text("Номер телефона");
         TextField TF_Phone = new TextField();
         Text errPhone = new Text("Неверный номер телефона"); errPhone.setVisible(false);
@@ -189,19 +226,16 @@ public class Authorization { // Авторизация
         VBox L_psw2 = new VBox(T_psw2, PF_psw2, errPsw2);
         L_psw2.setSpacing(8);
 
-        StackPane L_submit = new StackPane(B_submit);
-        L_submit.setAlignment(Pos.CENTER);
-
-        VBox L_mainBox = new VBox(L_up, L_psw1, L_psw2, L_submit);
+        VBox L_mainBox = new VBox(L_up, L_psw1, L_psw2, B_submit);
         L_mainBox.setAlignment(Pos.CENTER);
         L_mainBox.setSpacing(20);
         L_mainBox.setPadding(new Insets(20));
-        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+        L_mainBox.setStyle("-fx-background-color: silver;");
 
-        scene.setRoot(L_mainBox);
+        return Pane(L_mainBox, P_page, true);
     }
 
-    public static void restorePassword(){
+    public static Pane restorePassword(){
         Text T_phone = new Text("Телефон");
 
         TextField TF_Phone = new TextField();
@@ -225,8 +259,8 @@ public class Authorization { // Авторизация
         L_mainBox.setAlignment(Pos.CENTER);
         L_mainBox.setSpacing(20);
         L_mainBox.setPadding(new Insets(20));
-        L_mainBox.setStyle("-fx-background-color: rgb(30,160,230);");
+        L_mainBox.setStyle("-fx-background-color: silver;");
 
-        scene.setRoot(L_mainBox);
+        return Pane(L_mainBox, P_login, true);
     }
 }
