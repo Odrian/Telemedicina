@@ -126,6 +126,8 @@ public class Authorization { // Авторизация
         B_submit.setOnAction(e -> {
             System.out.println("Вход");
             // проверка правельности логина и пароля
+            stage.close();
+            mainPage.start();
         });
 
         Font F_a20 = new Font(20);

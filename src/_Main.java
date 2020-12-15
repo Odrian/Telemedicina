@@ -8,6 +8,6 @@ public class _Main extends Application { // Главный метод
 
     @Override
     public void start(Stage empty){
-        mainPage.start();
+        Authorization.start();
     }
 }

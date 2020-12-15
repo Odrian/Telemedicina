@@ -1,6 +1,6 @@
 public class DataServer { // связь с сервером
 
-    public static String[][] getData (){
+    public static String[][] getData (String id){
         return new String[][] {
                 {"666", "Me", "Hi", "17:28 10-12-2020"},
                 {"andrei", "Andrei", "Hi", "17:28 10-12-2020"},
@@ -12,6 +12,17 @@ public class DataServer { // связь с сервером
                 {"andrei", "Andrei", "Незнаю", "17:33 10-12-2020"},
                 {"666", "Me", "Пойдём завтра гулять", "17:33 10-12-2020"},
                 {"andrei", "Andrei", "Давай в 3 у школы", "17:35 10-12-2020"},
-                {"666", "Me", "ок", "17:36 10-12-2020"}};
+                {"666", "Me", "ок", "17:36 10-12-2020"}
+        };
+    }
+
+    public static String[][] getListMsg(){
+        return new String[][] {
+                {"andrei", "Fantasy talks", "andrei: Привет"},
+                {"666", "for me", "Ты: ок"}
+        };
+    }
+
+    public static void sendMsg(String msg, Object[] files){
     }
 }

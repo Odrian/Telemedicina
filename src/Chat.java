@@ -1,14 +1,21 @@
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
+import java.util.Arrays;
 
 public class Chat {
     private static Scene S_Chat = new Scene(new Pane());
@@ -16,24 +23,25 @@ public class Chat {
     private static Pane P_info;
     private static Pane P_addFile;
     private static String[][] data;
+    private static Object[] files = {};
 
-    public static void start(){
+    public static void start(String id){
+        data = DataServer.getData(id);
         setup();
     }
 
     private static void setup(){
-        data = DataServer.getData();
-        mainPage.main.setScene(S_Chat);
+        mainPage.stage.setScene(S_Chat);
         P_chat = chat();
         P_info = info();
         P_addFile = addFile();
         S_Chat.setRoot(P_chat);
-        mainPage.main.setWidth(400.001);
+        mainPage.stage.setWidth(mainPage.stage.getWidth() + 0.001);
     }
 
     private static Pane message(int i){
         String[] D_msg = data[i];
-        if (D_msg.length != 4){System.err.println("error length data");return new Pane();};
+        if (D_msg.length != 4){System.err.println("error length data");return new Pane();}
         String[] time = D_msg[3].split(" ");
 
         String ArialPath = "file:fonts/Arial.ttf";
@@ -104,13 +112,16 @@ public class Chat {
         ImageView I_send = new ImageView(new Image("file:pic/send.png"));
         Button B_send = new Button("", I_send);
         B_send.setStyle("-fx-background-color: transparent;");
+        FileChooser fileChooser = new FileChooser();
         B_addFile.setOnAction(e ->{
-            S_Chat.setRoot(new StackPane(P_chat, P_addFile));
+            files = fileChooser.showOpenMultipleDialog(mainPage.stage).toArray();
         });
         B_send.setOnAction(e ->{
-            String S_msg = TF_msg.getText();
+            String msg = TF_msg.getText();
             TF_msg.setText("");
-            // отправка сообщения
+            if (!(msg.equals("") && Arrays.equals(files, new Object[]{}))) {
+                DataServer.sendMsg(msg, files);
+            }
         });
         HBox send = new HBox(B_addFile, TF_msg, B_send);
         send.setMinHeight(44);
@@ -125,7 +136,6 @@ public class Chat {
         }
         ScrollPane S_messages = new ScrollPane(messages);
         S_messages.setVvalue(1);
-        S_messages.widthProperty();
 
         Pane LowSpace = new Pane();
         LowSpace.setMinHeight(5);
