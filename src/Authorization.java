@@ -68,8 +68,6 @@ public class Authorization { // Авторизация
         return new VBox(upPane, pane);
     }
 
-
-
     // окно выбора типа входа
     private static Pane page() {
         Image I_logo = new Image("file:pic/logo.png");
@@ -118,16 +116,25 @@ public class Authorization { // Авторизация
         PasswordField PF_psw = new PasswordField();
 
         Text T_ucp = new Text("Неверный логин или пароль, ");
+        T_ucp.setVisible(false);
         T_ucp.setOnMouseClicked(e -> {
             scene.setRoot(P_restorePsw);
         });
 
         Button B_submit = new Button("Войти");
         B_submit.setOnAction(e -> {
-            System.out.println("Вход");
-            // проверка правельности логина и пароля
-            stage.close();
-            mainPage.start();
+            String S_login = TF_login.getText();
+            String S_psw = PF_psw.getText();
+            T_ucp.setVisible(true);
+            for (String[] lowData : FileScan.fileGet("data/UsersData.txt")) {
+                if (S_login.equals(lowData[0])) {
+                    if (S_psw.equals(lowData[1])) {
+                        stage.close();
+                        mainPage.start();
+                    }
+                    break;
+                }
+            }
         });
 
         Font F_a20 = new Font(20);
@@ -162,7 +169,7 @@ public class Authorization { // Авторизация
     private static Pane regist(){
         Text T_Phone = new Text("Номер телефона");
         TextField TF_Phone = new TextField();
-        Text errPhone = new Text("Неверный номер телефона"); errPhone.setVisible(false);
+        Text errPhone = new Text("");
 
         Text T_psw = new Text("Пароль");
         PasswordField PF_psw = new PasswordField();
@@ -170,26 +177,38 @@ public class Authorization { // Авторизация
 
         Text T_psw2 = new Text("Подтвердите пароль");
         PasswordField PF_psw2 = new PasswordField();
-        Text errPsw2 = new Text("Пароли не совподают"); errPsw2.setVisible(false);
+        Text errPsw2 = new Text("");
 
         Button B_submit = new Button("Зарегествироваться");
 
         B_submit.setOnAction(e -> {
-            errPhone.setVisible(false);
+            errPhone.setText("");
             errPsw1.setText("");
-            errPsw2.setVisible(false);
+            errPsw2.setText("");
 
             String phone = TF_Phone.getText();
             String psw1 = PF_psw.getText();
             String psw2 = PF_psw2.getText();
-            if (phone.matches("7\\d{10}")){
+            if (phone.matches("8\\d{10}")){
                 if (psw1.length() >= 6){
                     if (psw1.matches("\\w*")){
                         if (psw1.equals(psw2)){
-                            System.out.println("Регестрация");
-                            // запрос к серверу на регестрацию
+                            boolean flag = true;
+                            String S_phone = TF_Phone.getText();
+                            for (String[] lowData : FileScan.fileGet("data/UsersData.txt")) {
+                                if (S_phone.equals(lowData[0])) {
+                                    flag = false;
+                                }
+                            }
+                            if (flag) {
+                                FileScan.fileAdd("data/UsersData.txt", "," + S_phone + " " + psw1);
+                                stage.close();
+                                mainPage.start();
+                            } else {
+                                errPhone.setText("Уже существует аккаунт с таким телефоном");
+                            }
                         } else{
-                            errPsw2.setVisible(true);
+                            errPsw2.setText("Пароли не совподают");
                         }
                     } else{
                         errPsw1.setText("Можно использовать толь англиский алфовит и цифры");
@@ -198,7 +217,7 @@ public class Authorization { // Авторизация
                     errPsw1.setText("Минимильная длина пароля - 6");
                 }
             } else{
-                errPhone.setVisible(true);
+                errPhone.setText("Неверный номер телефона");
             }
         });
 
