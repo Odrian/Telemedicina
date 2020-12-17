@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class mainPage {
+    public static String Id;
     public static Stage stage = new Stage();
     private static Scene scene = new Scene(new Pane());
     private static Pane pane;

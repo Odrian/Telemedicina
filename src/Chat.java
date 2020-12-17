@@ -21,10 +21,10 @@ public class Chat {
     private static Pane P_chat;
     private static Pane P_info;
     private static Object[] files = {};
-    private static String ID;
+    private static String id_tape;
 
     public static void start(String id){
-        ID = id;
+        id_tape = id;
         setup();
     }
 
@@ -110,8 +110,8 @@ public class Chat {
             String msg = TF_msg.getText();
             TF_msg.setText("");
             if (!(msg.equals("") && Arrays.equals(files, new Object[]{}))) {
-                String d = ";me,Me," + msg + "," + "17:39 17.12.20";
-                DataServer.sendMsg(ID, d, files);
+                String d = "\n" + mainPage.Id + "✚" + "Adrian" + "✚" + msg + "✚" + "17:39 17.12.20";
+                DataServer.sendMsg(id_tape, d, files);
                 setup();
             }
         });
@@ -123,11 +123,12 @@ public class Chat {
         messages.setAlignment(Pos.BOTTOM_CENTER);
         messages.setSpacing(15);
         messages.setPadding(new Insets(20));
-        for (String[] LowData : DataServer.getData(ID)){
+        for (String[] LowData : DataServer.getData(id_tape)){
             messages.getChildren().add(message(LowData));
         }
         ScrollPane S_messages = new ScrollPane(messages);
         S_messages.setVvalue(1);
+        VBox.setVgrow(S_messages, Priority.ALWAYS);
 
         Pane LowSpace = new Pane();
         LowSpace.setMinHeight(5);
