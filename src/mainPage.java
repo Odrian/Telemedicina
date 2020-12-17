@@ -1,5 +1,4 @@
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -40,37 +39,26 @@ public class mainPage {
 
     private static Pane pane(){
         Button B_leftMenu = new Button("", new ImageView(new Image("file:pic/menu.png")));
-//        B_leftMenu.setPrefHeight(20);
         B_leftMenu.setStyle("-fx-background-color: transparent;");
         B_leftMenu.setOnAction(e -> {
-            if (lp) {
-                pane.getChildren().remove(0);
-            } else {
-                pane.getChildren().add(0, leftPane);
-            }
+            if (lp) pane.getChildren().remove(0);
+            else pane.getChildren().add(0, leftPane);
             lp = !lp;
         });
 
         Button B_update = new Button("", new ImageView(new Image("file:pic/refresh.png")));
-//        B_update.setPrefHeight(20);
         B_update.setStyle("-fx-background-color: transparent;");
-        B_update.setOnAction(e -> {
-            pane = pane();
-        });
+        B_update.setOnAction(e -> pane = pane());
 
         Pane space = new Pane();
         HBox.setHgrow(space, Priority.ALWAYS);
         HBox upPane = new HBox(B_leftMenu, space, B_update);
         upPane.setMinHeight(40);
-//        upPane.setPrefWidth(Double.MAX_VALUE);
         upPane.setStyle("-fx-background-color: rgb(30,160,230);");
 
 
         VBox list = new VBox();
-        String[][] data = DataServer.getListMsg();
-        for (int i = 0; i < data.length; i++){
-            list.getChildren().add(listMsg(data[i]));
-        }
+        for (String[] LowData : DataServer.getListMsg("andrei")) list.getChildren().add(listMsg(LowData));
         list.setSpacing(8);
         list.setPadding(new Insets(10));
         VBox msgPane = new VBox(list);
@@ -95,9 +83,7 @@ public class mainPage {
         HBox main = new HBox(I_avatar, L_text);
         HBox.setHgrow(main, Priority.ALWAYS);
         main.setSpacing(8);
-        main.setOnMouseClicked(e -> {
-            Chat.start(LowData[0]);
-        });
+        main.setOnMouseClicked(e -> Chat.start(LowData[0]));
         return main;
     }
 

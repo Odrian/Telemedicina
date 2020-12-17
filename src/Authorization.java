@@ -94,9 +94,7 @@ public class Authorization { // Авторизация
             scene.setRoot(P_login);
         });
 
-        B_regist.setOnAction(e -> {
-            scene.setRoot(P_regist);
-        });
+        B_regist.setOnAction(e -> scene.setRoot(P_regist));
 
         B_gos.setOnAction(e -> {
             // вход через гос-услуги
@@ -117,9 +115,7 @@ public class Authorization { // Авторизация
 
         Text T_ucp = new Text("Неверный логин или пароль, ");
         T_ucp.setVisible(false);
-        T_ucp.setOnMouseClicked(e -> {
-            scene.setRoot(P_restorePsw);
-        });
+        T_ucp.setOnMouseClicked(e -> scene.setRoot(P_restorePsw));
 
         Button B_submit = new Button("Войти");
         B_submit.setOnAction(e -> {
@@ -202,24 +198,14 @@ public class Authorization { // Авторизация
                                 }
                             }
                             if (flag) {
-                                FileScan.fileAdd("data/UsersData.txt", "," + S_phone + " " + psw1);
+                                FileScan.fileAdd("data/UsersData.txt", ";" + S_phone + "," + psw1);
                                 stage.close();
                                 mainPage.start();
-                            } else {
-                                errPhone.setText("Уже существует аккаунт с таким телефоном");
-                            }
-                        } else{
-                            errPsw2.setText("Пароли не совподают");
-                        }
-                    } else{
-                        errPsw1.setText("Можно использовать толь англиский алфовит и цифры");
-                    }
-                } else{
-                    errPsw1.setText("Минимильная длина пароля - 6");
-                }
-            } else{
-                errPhone.setText("Неверный номер телефона");
-            }
+                            } else errPhone.setText("Уже существует аккаунт с таким телефоном");
+                        } else errPsw2.setText("Пароли не совподают");
+                    } else errPsw1.setText("Можно использовать толь англиский алфовит и цифры");
+                } else errPsw1.setText("Минимильная длина пароля - 6");
+            } else errPhone.setText("Неверный номер телефона");
         });
 
         Font F_a20 = new Font(20);
@@ -259,9 +245,7 @@ public class Authorization { // Авторизация
             if (TF_Phone.getText().matches("7\\d{10}")){
                 System.out.println("Востановление пароля");
                 // отправляем запрос на сервер
-            } else {
-                errPhone.setVisible(true);
-            }
+            } else errPhone.setVisible(true);
         });
 
         VBox L_mainBox = new VBox(T_phone, TF_Phone, B_submit);

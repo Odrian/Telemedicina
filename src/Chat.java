@@ -14,19 +14,17 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-
 import java.util.Arrays;
 
 public class Chat {
     private static Scene S_Chat = new Scene(new Pane());
     private static Pane P_chat;
     private static Pane P_info;
-    private static Pane P_addFile;
-    private static String[][] data;
     private static Object[] files = {};
+    private static String ID;
 
     public static void start(String id){
-        data = DataServer.getData(id);
+        ID = id;
         setup();
     }
 
@@ -34,19 +32,17 @@ public class Chat {
         mainPage.stage.setScene(S_Chat);
         P_chat = chat();
         P_info = info();
-        P_addFile = addFile();
         S_Chat.setRoot(P_chat);
         mainPage.stage.setWidth(mainPage.stage.getWidth() + 0.001);
     }
 
-    private static Pane message(int i){
-        String[] D_msg = data[i];
-        if (D_msg.length != 4){System.err.println("error length data");return new Pane();}
-        String[] time = D_msg[3].split(" ");
+    private static Pane message(String[] Data){
+        if (Data.length != 4){System.err.println("error length data");return new Pane();}
+        String[] time = Data[3].split(" ");
 
         String ArialPath = "file:fonts/Arial.ttf";
-        Text T_name = new Text(D_msg[1]);
-        Text T_msg = new Text(D_msg[2]);
+        Text T_name = new Text(Data[1]);
+        Text T_msg = new Text(Data[2]);
         Text T_time = new Text(time[0]);
         T_name.setFont(Font.loadFont(ArialPath, 16));
         T_msg.setFont(new Font(20));
@@ -60,7 +56,7 @@ public class Chat {
         L_messageText.setPadding(new Insets(3, 0, 0, 0));
 
         int I_size = 16;
-        ImageView I_avatar = new ImageView(new Image("file:pic/avatars/" + D_msg[0] + ".png"));
+        ImageView I_avatar = new ImageView(new Image("file:pic/avatars/" + Data[0] + ".png"));
         I_avatar.setClip(new Circle(I_size, I_size, I_size));
         I_avatar.setFitHeight(I_size * 2); I_avatar.setFitWidth(I_size * 2);
         I_avatar.setOnMouseClicked(e -> {
@@ -85,12 +81,8 @@ public class Chat {
         B_info.setAlignment(Pos.CENTER_RIGHT);
         Pane spacer = new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        B_back.setOnAction(e ->{
-            mainPage.start();
-        });
-        B_info.setOnAction(e ->{
-            S_Chat.setRoot(P_info);
-        });
+        B_back.setOnAction(e -> mainPage.start());
+        B_info.setOnAction(e -> S_Chat.setRoot(P_info));
         HBox upPane = new HBox(B_back, spacer, B_info);
         upPane.setStyle("-fx-background-color: rgb(30,160,230);");
         upPane.setMaxHeight(40);
@@ -113,9 +105,7 @@ public class Chat {
         Button B_send = new Button("", I_send);
         B_send.setStyle("-fx-background-color: transparent;");
         FileChooser fileChooser = new FileChooser();
-        B_addFile.setOnAction(e ->{
-            files = fileChooser.showOpenMultipleDialog(mainPage.stage).toArray();
-        });
+        B_addFile.setOnAction(e -> files = fileChooser.showOpenMultipleDialog(mainPage.stage).toArray());
         B_send.setOnAction(e ->{
             String msg = TF_msg.getText();
             TF_msg.setText("");
@@ -131,8 +121,8 @@ public class Chat {
         messages.setAlignment(Pos.BOTTOM_CENTER);
         messages.setSpacing(15);
         messages.setPadding(new Insets(20));
-        for (int i = 0; i < data.length; i++){
-            messages.getChildren().add(message(i));
+        for (String[] LowData : DataServer.getData(ID)){
+            messages.getChildren().add(message(LowData));
         }
         ScrollPane S_messages = new ScrollPane(messages);
         S_messages.setVvalue(1);
@@ -144,11 +134,6 @@ public class Chat {
     }
 
     private static Pane info(){
-
-        return new Pane();
-    }
-
-    private static Pane addFile(){
 
         return new Pane();
     }

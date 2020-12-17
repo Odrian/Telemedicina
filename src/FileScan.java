@@ -6,19 +6,15 @@ import java.util.List;
 
 public class FileScan { // Чтение-запись данных на устройтве
     public static List<String[]> fileGet(String path){ // пустышка
-        List<String[]> UsersData = new ArrayList<>();
+        ArrayList<String[]> UsersData = new ArrayList<>();
         try {
             FileReader fr = new FileReader(path);
             int ch;
             String temp1 = "";
-            while((ch = fr.read())!=-1){
-                temp1 += String.valueOf((char) ch);
-            }
+            while((ch = fr.read())!=-1) temp1 += String.valueOf((char) ch);
             fr.close();
-            String[] temp2 = temp1.split(",");
-            for  (int i = 0; i < temp2.length; i++) {
-                UsersData.add(temp2[i].split(" "));
-            }
+            String[] temp2 = temp1.split(";");
+            for (String s : temp2) UsersData.add(s.split(","));
         } catch (IOException e) {
             e.printStackTrace();
         }
