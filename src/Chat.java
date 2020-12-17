@@ -110,7 +110,9 @@ public class Chat {
             String msg = TF_msg.getText();
             TF_msg.setText("");
             if (!(msg.equals("") && Arrays.equals(files, new Object[]{}))) {
-                DataServer.sendMsg(msg, files);
+                String d = ";me,Me," + msg + "," + "17:39 17.12.20";
+                DataServer.sendMsg(ID, d, files);
+                setup();
             }
         });
         HBox send = new HBox(B_addFile, TF_msg, B_send);
