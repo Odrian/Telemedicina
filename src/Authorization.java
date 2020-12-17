@@ -198,6 +198,7 @@ public class Authorization { // Авторизация
                             for (String[] lowData : FileScan.fileGet("data/UsersData.txt")) {
                                 if (S_phone.equals(lowData[0])) {
                                     flag = false;
+                                    break;
                                 }
                             }
                             if (flag) {

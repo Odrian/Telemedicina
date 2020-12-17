@@ -1,12 +1,12 @@
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileScan { // Чтение-запись данных на устройтве
-    public static String[][] fileGet(String path){ // пустышка
-        String[][] UsersData = {};
+    public static List<String[]> fileGet(String path){ // пустышка
+        List<String[]> UsersData = new ArrayList<>();
         try {
             FileReader fr = new FileReader(path);
             int ch;
@@ -17,8 +17,7 @@ public class FileScan { // Чтение-запись данных на устр�
             fr.close();
             String[] temp2 = temp1.split(",");
             for  (int i = 0; i < temp2.length; i++) {
-                UsersData = Arrays.copyOf(UsersData, UsersData.length + 1); //create new array from old array and allocate one more element
-                UsersData[UsersData.length - 1] = temp2[i].split(" ");
+                UsersData.add(temp2[i].split(" "));
             }
         } catch (IOException e) {
             e.printStackTrace();
