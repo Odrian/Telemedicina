@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class mainPage {
     public static String Id;
     public static Stage stage = new Stage();
-    private static Scene scene = new Scene(new Pane());
+    private static final Scene scene = new Scene(new Pane());
     private static Pane pane;
     private static Pane leftPane;
     private static boolean lp = false;

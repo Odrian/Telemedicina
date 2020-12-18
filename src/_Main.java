@@ -10,9 +10,8 @@ public class _Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("fxml/NeoAuth.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("fxml/NeoAuth.fxml"));
             primaryStage.setTitle("Медицина");
             primaryStage.setScene(new Scene(root, 700, 400));
             primaryStage.setResizable(false);
@@ -24,7 +23,7 @@ public class _Main extends Application {
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() {
         PushNotif.close();
     }
 

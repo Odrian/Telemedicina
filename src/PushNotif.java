@@ -8,14 +8,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PushNotif {
-    private static Timer timer = new Timer();
+    private static final Timer timer = new Timer();
     private static TrayIcon trayIcon;
     private static SystemTray tray;
 
     public static void close(){
-        System.out.println(11);
         try {
-            tray.remove(trayIcon);
+            //tray.remove(trayIcon);
         } catch (Exception e) {
             System.out.println("Ошибка при удалении из трея");
             e.printStackTrace();

@@ -1,11 +1,11 @@
 public class Cryption {
-    public static String Cryption(String text){ // Шифровальшик
+    public static String cryption(String text){ // Шифровальшик
         text = expand(text);
         text = Crypt(text, true);
         return text;
     }
 
-    public static String UnCryption(String text){ // Разшивровщик
+    public static String un_cryption(String text){ // Разшивровщик
         text = Crypt(text, false);
         text = expand(text);
         return text;
