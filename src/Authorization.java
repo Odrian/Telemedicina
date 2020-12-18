@@ -4,11 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
-/*
-В setup() в приватные переменные задаются панели, кнопками сцене задаются другие панели,
-таким образом каждый переход на другое окно не нужно задаво создавать панели
- */
-
 public class Authorization { // Авторизация
     @FXML
     private Text error;

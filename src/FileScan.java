@@ -14,9 +14,8 @@ public class FileScan { // Чтение-запись данных на устр�
                 line = br.readLine();
             }
             fr.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
+            System.out.println("Оштбка при чтении файла");
             e.printStackTrace();
         }
         return UsersData;
@@ -28,6 +27,7 @@ public class FileScan { // Чтение-запись данных на устр�
             fw.write(text);
             fw.close();
         } catch (IOException e) {
+            System.out.println("Ошибка при записи в файл");
             e.printStackTrace();
         }
     }

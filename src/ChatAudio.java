@@ -29,7 +29,6 @@ class ChatAudio {
         TargetDataLine microphone;
         SourceDataLine speakers;
         try {
-            microphone = AudioSystem.getTargetDataLine(format);
             DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
             microphone = (TargetDataLine) AudioSystem.getLine(info);
             microphone.open(format);
@@ -55,6 +54,7 @@ class ChatAudio {
             speakers.close();
             microphone.close();
         } catch (LineUnavailableException e) {
+            System.out.println("Ошибка во время звонка");
             e.printStackTrace();
         }
     }

@@ -1,15 +1,11 @@
 import java.util.List;
 
 public class DataServer { // связь с сервером
-
-
     public static String login(String login, String psw) {
         String id = "";
         for (String[] lowData : FileScan.fileGet("data/UsersData.txt")) {
             if (login.equals(lowData[0])) {
-                if (psw.equals(lowData[1])) {
-                    id = "adrian"; // Надо брать с сервера
-                }
+                if (psw.equals(lowData[1])) id = "adrian"; // Надо брать с сервера
                 break;
             }
         }
