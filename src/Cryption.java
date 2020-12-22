@@ -1,3 +1,7 @@
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Cryption {
     public static String cryption(String text){ // Шифровальшик
         text = expand(text);
@@ -34,5 +38,23 @@ public class Cryption {
             keyNum = (keyNum + 1) % key.length();
         }
         return ret.toString();
+    }
+
+    public static String Sha512(String psw){ // Генератор Sha512 хешей
+        psw = "salt" + psw;
+        String Hash = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] bytes = md.digest(psw.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            Hash = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Ошибка при генерацие хеша Sha512");
+            e.printStackTrace();
+        }
+        return Hash;
     }
 }

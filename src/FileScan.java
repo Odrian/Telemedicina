@@ -15,7 +15,7 @@ public class FileScan { // Чтение-запись данных на устр�
             }
             fr.close();
         } catch (IOException e) {
-            System.out.println("Оштбка при чтении файла");
+            System.out.println("Ошибка при чтении файла");
             e.printStackTrace();
         }
         return UsersData;

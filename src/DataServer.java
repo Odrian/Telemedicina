@@ -5,7 +5,7 @@ public class DataServer { // связь с сервером
         String id = "";
         for (String[] lowData : FileScan.fileGet("data/UsersData.txt")) {
             if (login.equals(lowData[0])) {
-                if (psw.equals(lowData[1])) id = "adrian"; // Надо брать с сервера
+                if (psw.equals(lowData[1])) id = lowData[2];
                 break;
             }
         }
