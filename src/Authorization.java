@@ -49,6 +49,7 @@ public class Authorization { // Авторизация
                         if (!id.equals("")) {
                             // закрытие этого окна
                             mainPage.Id = id;
+                            mainPage.Name = id;
                             mainPage.start();
                         }
                     } else {

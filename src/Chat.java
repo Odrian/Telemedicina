@@ -15,6 +15,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Chat {
     private static Scene S_Chat = new Scene(new Pane());
@@ -22,6 +24,7 @@ public class Chat {
     private static Pane P_info;
     private static Object[] files = {};
     private static String id_tape;
+    private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     public static void start(String id){
         id_tape = id;
@@ -37,13 +40,13 @@ public class Chat {
     }
 
     private static Pane message(String[] Data){
-        if (Data.length != 4){System.err.println("error length data");return new Pane();}
+        if (Data.length != 4) {System.err.println("error length data");return new Pane();}
         String[] time = Data[3].split(" ");
 
         String ArialPath = "file:fonts/Arial.ttf";
         Text T_name = new Text(Data[1]);
         Text T_msg = new Text(Data[2]);
-        Text T_time = new Text(time[0]);
+        Text T_time = new Text(time[1]);
         T_name.setFont(Font.loadFont(ArialPath, 16));
         T_msg.setFont(new Font(20));
         T_msg.wrappingWidthProperty().bind(S_Chat.widthProperty().subtract(100));
@@ -110,7 +113,7 @@ public class Chat {
             String msg = TF_msg.getText();
             TF_msg.setText("");
             if (!(msg.equals("") && Arrays.equals(files, new Object[]{}))) {
-                String d = "\n" + mainPage.Id + "✚" + "Adrian" + "✚" + msg + "✚" + "17:39 17.12.20";
+                String d = "\n" + mainPage.Id + "✚" + mainPage.Name + "✚" + msg + "✚" + formatter.format(new Date());
                 DataServer.sendMsg(id_tape, d, files);
                 setup();
             }

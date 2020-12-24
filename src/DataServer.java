@@ -1,3 +1,8 @@
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class DataServer { // связь с сервером
@@ -23,20 +28,30 @@ public class DataServer { // связь с сервером
         }
         if (!flag) {
             FileScan.fileAdd("data/UsersData.txt", "\n" + phone + "✚" + psw);
-            id = "adrian"; // Надо брать с сервера
+            id = "Kate"; // Надо брать с сервера
         }
         return id;
     }
 
     public static List<String[]> getData (String id) {
-        return FileScan.fileGet("data/Chats/" + id + "_.txt");
-    }
-
-    public static List<String[]> getListMsg(String id) {
         return FileScan.fileGet("data/Chats/" + id + ".txt");
     }
 
-    public static void sendMsg(String id, String msg, Object[] files) {
-        FileScan.fileAdd("data/Chats/" + id + "_.txt", msg);
+    public static List<String[]> getListMsg(String id) {
+        return FileScan.fileGet("data/" + id + "/ChatList.txt");
+    }
+
+    public static void sendMsg(String ChatID, String msg, Object[] files) {
+        FileScan.fileAdd("data/Chats/" + ChatID + ".txt", msg);
+    }
+
+    public static void getImage(String path){
+        try (InputStream in = new URL("https://Telemedecina.com/download/file/").openStream()) {
+            Path d = Path.of("");
+            Files.copy(in, Path.of(""), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.out.println("Ошибка при скачивании файла: " + path);
+            e.printStackTrace();
+        }
     }
 }

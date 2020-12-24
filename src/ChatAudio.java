@@ -1,27 +1,9 @@
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
 
 class ChatAudio {
-    public static Stage stage = new Stage();
-    private static Scene scene = new Scene(new Pane());
-    private static Pane pane = new Pane();
-
     public static void start(){
-        setup();
         call();
-    }
-
-    private static void setup(){
-        pane = pane();
-    }
-
-    private static Pane pane(){
-
-        return new Pane();
     }
 
     private static void call(){

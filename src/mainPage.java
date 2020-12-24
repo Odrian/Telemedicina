@@ -9,8 +9,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class mainPage {
     public static String Id;
+    public static String Name;
     public static Stage stage = new Stage();
     private static final Scene scene = new Scene(new Pane());
     private static Pane pane;
@@ -47,7 +50,11 @@ public class mainPage {
             lp = !lp;
         });
 
-        Button B_update = new Button("", new ImageView(new Image("file:pic/refresh.png")));
+        Image i = new Image("file:pic/refresh.png");
+        if (i.isError()) {
+            DataServer.getImage("");
+        }
+        Button B_update = new Button("", new ImageView(i));
         B_update.setStyle("-fx-background-color: transparent;");
         B_update.setOnAction(e -> pane = pane());
 
@@ -59,7 +66,7 @@ public class mainPage {
 
 
         VBox list = new VBox();
-        for (String[] LowData : DataServer.getListMsg("andrei")) list.getChildren().add(listMsg(LowData));
+        for (String[] LowData : DataServer.getListMsg(Id)) list.getChildren().add(listMsg(LowData));
         list.setSpacing(8);
         list.setPadding(new Insets(10));
         VBox msgPane = new VBox(list);

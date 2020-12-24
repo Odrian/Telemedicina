@@ -14,7 +14,7 @@ public class PushNotif {
 
     public static void close(){
         try {
-            //tray.remove(trayIcon);
+            tray.remove(trayIcon);
         } catch (Exception e) {
             System.out.println("Ошибка при удалении из трея");
             e.printStackTrace();
