@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/vhod"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="30dp"
+        android:text="Вход"
+        android:layout_marginTop="75dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"/>
+
+    <Button
+        android:id="@+id/registr"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="25dp"
+        android:text="Регистрация"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"/>
+
+    <Button
+        android:id="@+id/gos_yslygi"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="75dp"
+        android:text="Гос-Услуги"
+        android:layout_marginRight="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="25dp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
